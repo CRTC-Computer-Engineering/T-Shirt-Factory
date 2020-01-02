@@ -13,8 +13,12 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
 
+        self.UserIdComboBox.SetValue(["Yeeet", "yote"])
+        log.debug(self.UserIdComboBox.GetCurrentSelection())
+
+    # Function by joe
     def export_all(self, event): # Exports everything at once
-        log.debug("Ran export all.") # Debug message
+        log.info("Ran export all.") # Debug message
         return None
 
 if __name__ == "__main__":

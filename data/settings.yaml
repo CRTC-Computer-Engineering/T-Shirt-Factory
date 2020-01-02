@@ -1,0 +1,20 @@
+clothing_types:
+  - T-Shirt
+  - Shirt
+  - Uniform Shirt
+  - Hoodie
+
+clothing_sizes:
+  - Extra Small
+  - Small
+  - Medium
+  - Large
+  - Extra Large
+  - Extra Extra Large
+
+clothing_colors:
+  - Red
+  - Green
+  - Blue
+  - Orange
+  - Yellow
