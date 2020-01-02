@@ -2,7 +2,7 @@
 
 import logging
 
-def return_dollar(float dollar_value):
+def return_dollar(dollar_value):
     return "$" + str(dollar_value)
 
 if __name__ == "__main__":
