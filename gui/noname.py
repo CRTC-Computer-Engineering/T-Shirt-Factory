@@ -182,6 +182,12 @@ class root_frame ( wx.Frame ):
 		self.SetSizer( BoxSizer )
 		self.Layout()
 		self.MenuBar = wx.MenuBar( 0 )
+		self.MenuBarFile = wx.Menu()
+		self.MenuBarExit = wx.MenuItem( self.MenuBarFile, wx.ID_ANY, u"Exit", wx.EmptyString, wx.ITEM_NORMAL )
+		self.MenuBarFile.Append( self.MenuBarExit )
+
+		self.MenuBar.Append( self.MenuBarFile, u"File" )
+
 		self.SetMenuBar( self.MenuBar )
 
 
