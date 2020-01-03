@@ -3,7 +3,13 @@
 import wx
 import logging as log # Import logging library as log in the code
 import gui.noname as gui # Import our custom gui as gui
+from glob import glob
+import os.path as path
 
+def return_user_ids():
+    userdata_path = path.abspath(path.join(__file__ ,"..\\userdata\\*"))
+    cleaned_ids = ([path.basename(x) for x in glob(userdata_path)])
+    return cleaned_ids
 
 # Function by Nathan
 def return_dollar(dollar_value):
@@ -13,7 +19,6 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
 
-        self.UserIdComboBox.SetValue(["Yeeet", "yote"])
         log.debug(self.UserIdComboBox.GetCurrentSelection())
 
     # Function by joe
