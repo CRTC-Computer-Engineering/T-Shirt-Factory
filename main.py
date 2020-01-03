@@ -1,30 +1,53 @@
 #!/usr/bin/env python
 
-import wx
+import wx # Import WX for ui elements
 import logging as log # Import logging library as log in the code
 import gui.noname as gui # Import our custom gui as gui
-from glob import glob
-import os.path as path
+from glob import glob # Import glob for getting filenames
+import os.path as path # Import os.path (our location) as path
+import yaml # Import yaml so we can use config files
 
 def return_user_ids():
     userdata_path = path.abspath(path.join(__file__ ,"..\\userdata\\*"))
     cleaned_ids = ([path.basename(x) for x in glob(userdata_path)])
     return cleaned_ids
-
 # Function by Nathan
 def return_dollar(dollar_value):
     return "$" + str(dollar_value) # Concanate strings
+# Function By Joe
+def yaml_loader(fileDir, data = None):
+    if data != None:
+        # Write YAML file
+        with open(fileDir) as outfile:
+            yaml.dump(data, outfile)
+
+    # Read YAML file
+    with open(fileDir, 'r') as stream:
+        return yaml.safe_load(stream)
 
 class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
 
-        log.debug(self.UserIdComboBox.GetCurrentSelection())
+        self.settings = (yaml_loader("data/settings.yaml")) # Load the yaml settings and save them as self.settings
+        self.UserIdComboBox.SetItems(['0001', '0002', '0003']) # Make all new!
+        self.ClothingTypeChoice.SetItems(self.settings["clothing_types"]) # Retreive all the clothing types from settings
+        self.ClothingColorChoice.SetItems(self.settings["clothing_colors"]) # Retreive all the clothing colors from settings
+        self.DiscountChoice.SetItems(['None', 'Blue', 'Nathan Hewy']) # Make all new!
 
     # Function by joe
     def export_all(self, event): # Exports everything at once
-        log.info("Ran export all.") # Debug message
-        return None
+        # Capture all variables
+        self.user_id = self.UserIdComboBox.GetCurrentSelection()
+        self.clothing_type = self.ClothingTypeChoice.GetCurrentSelection()
+        self.color = self.ClothingColorChoice.GetCurrentSelection()
+        self.base_price = self.BasePriceInput.GetLineText(0)
+        self.discount = self.DiscountChoice.GetCurrentSelection()
+        self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue()
+        log.debug("Ran export all.") # Debug message
+
+        # Basic Math
+
 
 if __name__ == "__main__":
     log.basicConfig(level=log.DEBUG) # Set logging level

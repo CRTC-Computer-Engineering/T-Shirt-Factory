@@ -17,7 +17,7 @@ import wx.xrc
 class root_frame ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 472,741 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 472,650 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -137,6 +137,9 @@ class root_frame ( wx.Frame ):
 
 		self.XXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
 		SizeGridSizer.Add( self.XXXLSpin, 0, wx.ALL, 5 )
+
+		self.UseProductionModifiersBox = wx.CheckBox( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"Use Size-Cost Modifiers", wx.DefaultPosition, wx.DefaultSize, 0 )
+		SizeGridSizer.Add( self.UseProductionModifiersBox, 0, wx.ALL, 5 )
 
 
 		SizeLabelBox.Add( SizeGridSizer, 0, wx.EXPAND, 5 )

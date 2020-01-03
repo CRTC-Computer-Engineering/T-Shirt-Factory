@@ -4,17 +4,18 @@ clothing_types:
   - Uniform Shirt
   - Hoodie
 
-clothing_sizes:
-  - Extra Small
-  - Small
-  - Medium
-  - Large
-  - Extra Large
-  - Extra Extra Large
-
 clothing_colors:
   - Red
   - Green
   - Blue
   - Orange
   - Yellow
+
+production_miltiplers:
+  XS: 1.0
+  S: 1.0
+  M: 1.0
+  L: 1.0
+  XL: 1.0
+  XXL: 1.25
+  XXXL: 1.25
