@@ -4,12 +4,13 @@ import wx # Import WX for ui elements
 import logging as log # Import logging library as log in the code
 import gui.noname as gui # Import our custom gui as gui
 from glob import glob # Import glob for getting filenames
-import os.path as path # Import os.path (our location) as path
+import os # Import os
 import yaml # Import yaml so we can use config files
 
+
 def return_user_ids():
-    userdata_path = path.abspath(path.join(__file__ ,"..\\userdata\\*"))
-    cleaned_ids = ([path.basename(x) for x in glob(userdata_path)])
+    userdata_path = os.path.abspath(os.path.join(__file__ ,"..\\userdata\\*"))
+    cleaned_ids = ([os.path.basename(x) for x in glob(userdata_path)])
     return cleaned_ids
 # Function by Nathan
 def return_dollar(dollar_value):
@@ -18,7 +19,7 @@ def return_dollar(dollar_value):
 def yaml_loader(fileDir, data = None):
     if data != None:
         # Write YAML file
-        with open(fileDir) as outfile:
+        with open(fileDir, "w+") as outfile:
             yaml.dump(data, outfile)
 
     # Read YAML file
@@ -28,8 +29,11 @@ def yaml_loader(fileDir, data = None):
 class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
+        
+        self.settings_location = "data\\settings.yaml"
+        self.initalize_filesystem()
 
-        self.settings = (yaml_loader("data/settings.yaml")) # Load the yaml settings and save them as self.settings
+        self.settings = (yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
         self.UserIdComboBox.SetItems(['0001', '0002', '0003']) # Make all new!
         self.ClothingTypeChoice.SetItems(self.settings["clothing_types"]) # Retreive all the clothing types from settings
         self.ClothingColorChoice.SetItems(self.settings["clothing_colors"]) # Retreive all the clothing colors from settings
@@ -45,9 +49,12 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.discount = self.DiscountChoice.GetCurrentSelection()
         self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue()
         log.debug("Ran export all.") # Debug message
-
-        # Basic Math
-
+    
+    # Function by joe
+    def initalize_filesystem(self): # Will reset all settings back to zero
+        if not os.path.exists("data\\"): # If the file does not exist, initalize everything
+            os.makedirs("data\\")
+            yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
 
 if __name__ == "__main__":
     log.basicConfig(level=log.DEBUG) # Set logging level
