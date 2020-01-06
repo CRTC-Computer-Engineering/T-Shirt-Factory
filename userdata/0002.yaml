@@ -1,0 +1,5 @@
+customer:
+  previous_orders:
+    '202016':
+      cost: 30
+      other: yote

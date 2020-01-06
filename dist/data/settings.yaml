@@ -1,0 +1,19 @@
+clothing_colors:
+- Red
+- Green
+- Blue
+- Orange
+- Yellow
+clothing_types:
+- T-Shirt
+- Shirt
+- Uniform Shirt
+- Hoodie
+production_miltiplers:
+  L: 1.0
+  M: 1.0
+  S: 1.0
+  XL: 1.0
+  XS: 1.0
+  XXL: 1.25
+  XXXL: 1.25

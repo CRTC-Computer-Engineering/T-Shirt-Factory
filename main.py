@@ -2,12 +2,13 @@
 
 import wx # Import WX for ui elements
 import logging as log # Import logging library as log in the code
-import gui.noname as gui # Import our custom gui as gui
 from glob import glob # Import glob for getting filenames
 import os # Import os
 import yaml # Import yaml so we can use config files
 import datetime
 
+import gui.noname as gui # Import our custom gui as gui
+import custom_functions # Import our custom files
 
 def return_user_ids():
     userdata_path = os.path.abspath(os.path.join(__file__ ,"..\\userdata\\*"))
@@ -16,19 +17,6 @@ def return_user_ids():
     for id in raw_ids:
         cleaned_ids.append(id.replace(".yaml",""))
     return cleaned_ids
-# Function by Nathan
-def return_dollar(dollar_value):
-    return "$" + str(dollar_value) # Concanate strings
-# Function By Joe
-def yaml_loader(fileDir, data = None):
-    if data != None:
-        # Write YAML file
-        with open(fileDir, "w+") as outfile:
-            yaml.dump(data, outfile)
-
-    # Read YAML file
-    with open(fileDir, 'r') as stream:
-        return yaml.safe_load(stream)
 
 class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
@@ -38,7 +26,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.userdata_location = "userdata\\"
         self.initalize_filesystem()
 
-        self.settings = (yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
+        self.settings = (custom_functions.yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
         self.UserIdComboBox.SetItems(return_user_ids()) # Update with ability to read files in that location
         self.ClothingTypeChoice.SetItems(self.settings["clothing_types"]) # Retreive all the clothing types from settings
         self.ClothingColorChoice.SetItems(self.settings["clothing_colors"]) # Retreive all the clothing colors from settings
@@ -56,10 +44,10 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.export_format = self.OutputFormatChoice.GetStringSelection()
         log.debug("Captured all messages.") # Debug message
 
-        log.debug(self.user_id)
         # Do all math and logic
+        timestamp = datetime.datetime.today()
         if self.user_id not in return_user_ids():
-            yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {datetime.datetime.today(): {'cost': 30, 'other': 'yote'}}}})
+            custom_functions.yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {str(timestamp.month) + "-" + str(timestamp.day) + "-" + str(timestamp.year): {'cost': 30, 'other': 'yote'}}}})
 
         # Export everything
         if self.export_format == "pdf":
@@ -74,7 +62,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         if not os.path.exists("data\\"): # If the file does not exist, initalize everything
             os.makedirs("data\\")
             os.makedirs("userdata\\")
-            yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
+            custom_functions.yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
 
 if __name__ == "__main__":
     log.basicConfig(level=log.DEBUG) # Set logging level
