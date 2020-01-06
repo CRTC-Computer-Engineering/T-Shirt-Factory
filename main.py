@@ -6,11 +6,15 @@ import gui.noname as gui # Import our custom gui as gui
 from glob import glob # Import glob for getting filenames
 import os # Import os
 import yaml # Import yaml so we can use config files
+import datetime
 
 
 def return_user_ids():
     userdata_path = os.path.abspath(os.path.join(__file__ ,"..\\userdata\\*"))
-    cleaned_ids = ([os.path.basename(x) for x in glob(userdata_path)])
+    cleaned_ids = []
+    raw_ids = ([os.path.basename(x) for x in glob(userdata_path)])
+    for id in raw_ids:
+        cleaned_ids.append(id.replace(".yaml",""))
     return cleaned_ids
 # Function by Nathan
 def return_dollar(dollar_value):
@@ -31,29 +35,45 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
         
         self.settings_location = "data\\settings.yaml"
+        self.userdata_location = "userdata\\"
         self.initalize_filesystem()
 
         self.settings = (yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
-        self.UserIdComboBox.SetItems(['0001', '0002', '0003']) # Make all new!
+        self.UserIdComboBox.SetItems(return_user_ids()) # Update with ability to read files in that location
         self.ClothingTypeChoice.SetItems(self.settings["clothing_types"]) # Retreive all the clothing types from settings
         self.ClothingColorChoice.SetItems(self.settings["clothing_colors"]) # Retreive all the clothing colors from settings
-        self.DiscountChoice.SetItems(['None', 'Blue', 'Nathan Hewy']) # Make all new!
+        self.DiscountChoice.SetItems(['None']) # Make all new!
 
     # Function by joe
     def export_all(self, event): # Exports everything at once
         # Capture all variables
-        self.user_id = self.UserIdComboBox.GetCurrentSelection()
-        self.clothing_type = self.ClothingTypeChoice.GetCurrentSelection()
-        self.color = self.ClothingColorChoice.GetCurrentSelection()
+        self.user_id = self.UserIdComboBox.GetValue()
+        self.clothing_type = self.ClothingTypeChoice.GetStringSelection()
+        self.color = self.ClothingColorChoice.GetStringSelection()
         self.base_price = self.BasePriceInput.GetLineText(0)
-        self.discount = self.DiscountChoice.GetCurrentSelection()
+        self.discount = self.DiscountChoice.GetStringSelection()
         self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue()
-        log.debug("Ran export all.") # Debug message
+        self.export_format = self.OutputFormatChoice.GetStringSelection()
+        log.debug("Captured all messages.") # Debug message
+
+        log.debug(self.user_id)
+        # Do all math and logic
+        if self.user_id not in return_user_ids():
+            yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {datetime.datetime.today(): {'cost': 30, 'other': 'yote'}}}})
+
+        # Export everything
+        if self.export_format == "pdf":
+            None
+        elif self.export_format == "txt":
+            print("this needs to be done")
+        else:
+            log.error("Error: Export format not understood")
     
     # Function by joe
     def initalize_filesystem(self): # Will reset all settings back to zero
         if not os.path.exists("data\\"): # If the file does not exist, initalize everything
             os.makedirs("data\\")
+            os.makedirs("userdata\\")
             yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
 
 if __name__ == "__main__":
