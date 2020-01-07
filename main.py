@@ -37,12 +37,23 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         # Capture all variables
         self.user_id = self.UserIdComboBox.GetValue()
         self.clothing_type = self.ClothingTypeChoice.GetStringSelection()
-        self.color = self.ClothingColorChoice.GetStringSelection()
+        self.color = self.ClothingColorChoice.GetValue()
         self.base_price = self.BasePriceInput.GetLineText(0)
         self.discount = self.DiscountChoice.GetStringSelection()
         self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue()
         self.export_format = self.OutputFormatChoice.GetStringSelection()
-        log.debug("Captured all messages.") # Debug message
+        log.debug("Captured all settings.") # Debug message
+
+        self.SQty = self.SSpin.GetValue() # Get the values of all the spinboxes for the qty of shirts
+        self.MQty = self.MSpin.GetValue()
+        self.LQty = self.LSpin.GetValue()
+        self.XLQty = self.XLSpin.GetValue()
+        self.XXLQty = self.XXLSpin.GetValue()
+        self.XXXLQty = self.XXXLSpin.GetValue()
+        self.XXXXLQty = self.XXXXLSpin.GetValue()
+        self.XXXXXLQty = self.XXXXLSpin.GetValue()
+
+        #self.settings(["production_miltiplers"]["S"]) # Get the production Multiplers out of the settings file
 
         # Do all math and logic
         timestamp = datetime.datetime.today()

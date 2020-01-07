@@ -17,7 +17,7 @@ import wx.xrc
 class root_frame ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 472,650 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 474,692 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -134,16 +134,16 @@ class root_frame ( wx.Frame ):
 
 		SizeGridSizer.Add( self.XXXXLLabel, 0, wx.ALL, 5 )
 
-		self.m_spinCtrl9 = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
-		SizeGridSizer.Add( self.m_spinCtrl9, 0, wx.ALL, 5 )
+		self.XXXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.XXXXLSpin, 0, wx.ALL, 5 )
 
 		self.XXXXXLLabel = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XXXXXL", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.XXXXXLLabel.Wrap( -1 )
 
 		SizeGridSizer.Add( self.XXXXXLLabel, 0, wx.ALL, 5 )
 
-		self.m_spinCtrl10 = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
-		SizeGridSizer.Add( self.m_spinCtrl10, 0, wx.ALL, 5 )
+		self.XXXXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.XXXXXLSpin, 0, wx.ALL, 5 )
 
 		self.UseProductionModifiersBox = wx.CheckBox( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"Use Size-Cost Modifiers", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.UseProductionModifiersBox.SetValue(True)
