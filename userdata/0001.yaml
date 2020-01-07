@@ -1,0 +1,4 @@
+customer:
+  previous_orders:
+    01022020:
+      cost: 30

@@ -1,0 +1,5 @@
+gui/__pycache__/*
+__pycache__/*
+build/*
+main.spec
+temp/*
