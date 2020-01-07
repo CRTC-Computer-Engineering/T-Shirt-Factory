@@ -53,8 +53,7 @@ class root_frame ( wx.Frame ):
 		gSizer1.Add( self.ClothingColorLabel, 0, wx.ALL, 5 )
 
 		ClothingColorChoiceChoices = []
-		self.ClothingColorChoice = wx.Choice( InputLabelBox.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, ClothingColorChoiceChoices, 0 )
-		self.ClothingColorChoice.SetSelection( 0 )
+		self.ClothingColorChoice = wx.ComboBox( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Color", wx.DefaultPosition, wx.DefaultSize, ClothingColorChoiceChoices, 0 )
 		gSizer1.Add( self.ClothingColorChoice, 0, wx.ALL, 5 )
 
 		self.BasePriceLabel = wx.StaticText( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Base Price", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -81,14 +80,6 @@ class root_frame ( wx.Frame ):
 		SizeLabelBox = wx.StaticBoxSizer( wx.StaticBox( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Sizes" ), wx.VERTICAL )
 
 		SizeGridSizer = wx.GridSizer( 0, 2, 0, 0 )
-
-		self.XS = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XS", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.XS.Wrap( -1 )
-
-		SizeGridSizer.Add( self.XS, 0, wx.ALL, 5 )
-
-		self.XSSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
-		SizeGridSizer.Add( self.XSSpin, 0, wx.ALL, 5 )
 
 		self.S = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"S", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.S.Wrap( -1 )
@@ -138,7 +129,24 @@ class root_frame ( wx.Frame ):
 		self.XXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
 		SizeGridSizer.Add( self.XXXLSpin, 0, wx.ALL, 5 )
 
+		self.XXXXLLabel = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XXXXL", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.XXXXLLabel.Wrap( -1 )
+
+		SizeGridSizer.Add( self.XXXXLLabel, 0, wx.ALL, 5 )
+
+		self.m_spinCtrl9 = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.m_spinCtrl9, 0, wx.ALL, 5 )
+
+		self.XXXXXLLabel = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XXXXXL", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.XXXXXLLabel.Wrap( -1 )
+
+		SizeGridSizer.Add( self.XXXXXLLabel, 0, wx.ALL, 5 )
+
+		self.m_spinCtrl10 = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.m_spinCtrl10, 0, wx.ALL, 5 )
+
 		self.UseProductionModifiersBox = wx.CheckBox( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"Use Size-Cost Modifiers", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.UseProductionModifiersBox.SetValue(True)
 		SizeGridSizer.Add( self.UseProductionModifiersBox, 0, wx.ALL, 5 )
 
 
