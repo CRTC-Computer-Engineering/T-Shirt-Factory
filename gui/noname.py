@@ -206,6 +206,7 @@ class root_frame ( wx.Frame ):
 
 		# Connect Events
 		self.ExportButton.Bind( wx.EVT_BUTTON, self.export_all )
+		self.Bind( wx.EVT_MENU, self.exit, id = self.MenuBarExit.GetId() )
 
 	def __del__( self ):
 		pass
@@ -213,6 +214,9 @@ class root_frame ( wx.Frame ):
 
 	# Virtual event handlers, overide them in your derived class
 	def export_all( self, event ):
+		event.Skip()
+
+	def exit( self, event ):
 		event.Skip()
 
 

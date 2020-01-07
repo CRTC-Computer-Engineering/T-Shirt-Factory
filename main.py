@@ -18,6 +18,21 @@ def return_user_ids():
         cleaned_ids.append(id.replace(".yaml",""))
     return cleaned_ids
 
+class shirt():
+    def __init__(self, qty, base_cost, fee, name):
+        self.qty = qty
+        self.base_cost = base_cost
+        self.fee = fee
+        self.name = name
+
+    def get_invoice_text(self):
+        if self.fee == 0:
+            return(self.qty + " " + self.name + "s")
+        else:
+            return(self.qty + " " + self.name + "s  with a $" + self.fee + " fee per " + self.name)
+    def get_cost(self):
+        return self.qty * (self.base_cost + self.fee)
+
 class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
@@ -33,27 +48,30 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.DiscountChoice.SetItems(['None']) # Make all new!
 
     # Function by joe
+    def exit(self, event):
+        exit()
+
+    # Function by joe
     def export_all(self, event): # Exports everything at once
-        # Capture all variables
-        self.user_id = self.UserIdComboBox.GetValue()
-        self.clothing_type = self.ClothingTypeChoice.GetStringSelection()
-        self.color = self.ClothingColorChoice.GetValue()
-        self.base_price = self.BasePriceInput.GetLineText(0)
-        self.discount = self.DiscountChoice.GetStringSelection()
-        self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue()
-        self.export_format = self.OutputFormatChoice.GetStringSelection()
+        self.user_id = self.UserIdComboBox.GetValue() # Capture the User ID
+        self.clothing_type = self.ClothingTypeChoice.GetStringSelection() # Capture the Clothing Type
+        self.color = self.ClothingColorChoice.GetValue() # Capture the Color Selection
+        self.base_price = self.BasePriceInput.GetLineText(0) # Capture the Base Price
+        self.discount = self.DiscountChoice.GetStringSelection() # Capture the discount choice
+        self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue() # Capture the bool
+        self.export_format = self.OutputFormatChoice.GetStringSelection() # Capture the output format
         log.debug("Captured all settings.") # Debug message
 
-        self.SQty = self.SSpin.GetValue() # Get the values of all the spinboxes for the qty of shirts
-        self.MQty = self.MSpin.GetValue()
-        self.LQty = self.LSpin.GetValue()
-        self.XLQty = self.XLSpin.GetValue()
-        self.XXLQty = self.XXLSpin.GetValue()
-        self.XXXLQty = self.XXXLSpin.GetValue()
-        self.XXXXLQty = self.XXXXLSpin.GetValue()
-        self.XXXXXLQty = self.XXXXLSpin.GetValue()
+        self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["S"]), "S " + self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
+        self.MShirt = shirt(self.MSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["M"]), "M " + self.clothing_type)
+        self.LShirt = shirt(self.LSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["L"]), "L " + self.clothing_type)
+        self.XLShirt = shirt(self.XLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XL"]), "XL " + self.clothing_type)
+        self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXL"]), "XXL " + self.clothing_type)
+        self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXL"]), "XXXL " + self.clothing_type)
+        self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXXL"]), "XXXXL " + self.clothing_type)
+        self.XXXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXXXL"]), "XXXXXL " + self.clothing_type)
 
-        #self.settings(["production_miltiplers"]["S"]) # Get the production Multiplers out of the settings file
+        self.order_list = [self.SShirt, self.MShirt, self.LShirt, self.XLShirt, self.XXLShirt, self.XXXLShirt, self.XXXXLShirt, self.XXXXXLShirt] # list of all shirts
 
         # Do all math and logic
         timestamp = datetime.datetime.today()
