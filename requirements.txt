@@ -1,0 +1,4 @@
+glob3==0.0.1
+PyInstaller==3.5
+PyYAML==5.1.2
+wxPython==4.0.6
