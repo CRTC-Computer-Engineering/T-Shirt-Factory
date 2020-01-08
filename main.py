@@ -69,7 +69,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXL"], "XXL " + self.clothing_type)
         self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXL"], "XXXL " + self.clothing_type)
         self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXL"], "XXXXL " + self.clothing_type)
-        self.XXXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXXL"], "XXXXXL " + self.clothing_type)
+        self.XXXXXLShirt = shirt(self.XXXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXXL"], "XXXXXL " + self.clothing_type)
 
         self.order_list = [self.SShirt, self.MShirt, self.LShirt, self.XLShirt, self.XXLShirt, self.XXXLShirt, self.XXXXLShirt, self.XXXXXLShirt] # list of all shirts
 
