@@ -29,7 +29,7 @@ class shirt():
         if self.fee == 0:
             return(str(self.qty) + " " + self.name + "s") # Text if no quantity is ordered
         else:
-            return(str(self.qty) + " " + self.name + "s  with an additional $" + str(self.fee) + " fee per " + self.name) # Text if  a quantity over zero is ordered, determined by quantity & price
+            return(str(self.qty) + " " + self.name + "s with an additional $" + str(self.fee) + " fee per " + self.name) # Text if  a quantity over zero is ordered, determined by quantity & price
     def get_cost(self):
         return self.qty * (self.base_cost + self.fee) # Calculates total cost owed
 
@@ -85,6 +85,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             for size in self.order_list:
                 if size.get_cost() > 0:
                     print(size.get_invoice_text()) # Display invoice text if quantity above zero is ordered
+                    print("The total cost of your purchase is $" + str(int(size.get_cost())))
         else:
             log.error("Error: Export format not understood") # Displays error if no export file format is selected
 
