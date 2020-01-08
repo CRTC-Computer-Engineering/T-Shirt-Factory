@@ -1,0 +1,5 @@
+customer:
+  previous_orders:
+    1-8-2020:
+      cost: 30
+      other: yote

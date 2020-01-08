@@ -20,23 +20,23 @@ def return_user_ids():
 
 class shirt():
     def __init__(self, qty, base_cost, fee, name):
-        self.qty = int(qty)
-        self.base_cost = float(base_cost)
-        self.fee = float(fee)
-        self.name = name
+        self.qty = int(qty) # Set quantity of order to self.qty
+        self.base_cost = float(base_cost) # Set the base cost of order to self.base_cost
+        self.fee = float(fee) # Set the fee per item in order to self.fee
+        self.name = name # Set name of person ordering to self.name
 
-    def get_invoice_text(self):
+    def get_invoice_text(self): # Setting text that will display on invoice depending on variables above
         if self.fee == 0:
-            return(str(self.qty) + " " + self.name + "s")
+            return(str(self.qty) + " " + self.name + "s") # Text if no quantity is ordered
         else:
-            return(str(self.qty) + " " + self.name + "s  with a $" + str(self.fee) + " fee per " + self.name)
+            return(str(self.qty) + " " + self.name + "s  with an additional $" + str(self.fee) + " fee per " + self.name) # Text if  a quantity over zero is ordered, determined by quantity & price
     def get_cost(self):
-        return self.qty * (self.base_cost + self.fee)
+        return self.qty * (self.base_cost + self.fee) # Calculates total cost owed
 
 class tshirt_factory(gui.root_frame): # Class for our app frame
     def __init__(self, parent): # Runs once when we init
         gui.root_frame.__init__(self, parent) # Sets root_frame in gui to the init of gui
-        
+
         self.settings_location = "data\\settings.yaml"
         self.userdata_location = "userdata\\"
         self.initalize_filesystem()
@@ -79,15 +79,15 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             custom_functions.yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {str(timestamp.month) + "-" + str(timestamp.day) + "-" + str(timestamp.year): {'cost': 30, 'other': 'yote'}}}})
 
         # Export everything
-        if self.export_format == "pdf":
+        if self.export_format == "pdf": # Determines export file format
             None
-        elif self.export_format == "txt":
+        elif self.export_format == "txt": # Determines export file format
             for size in self.order_list:
                 if size.get_cost() > 0:
-                    print(size.get_invoice_text())
+                    print(size.get_invoice_text()) # Display invoice text if quantity above zero is ordered
         else:
-            log.error("Error: Export format not understood")
-    
+            log.error("Error: Export format not understood") # Displays error if no export file format is selected
+
     # Function by joe
     def initalize_filesystem(self): # Will reset all settings back to zero
         if not os.path.exists("data\\"): # If the file does not exist, initalize everything
