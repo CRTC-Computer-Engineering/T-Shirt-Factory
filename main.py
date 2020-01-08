@@ -20,16 +20,16 @@ def return_user_ids():
 
 class shirt():
     def __init__(self, qty, base_cost, fee, name):
-        self.qty = qty
-        self.base_cost = base_cost
-        self.fee = fee
+        self.qty = int(qty)
+        self.base_cost = float(base_cost)
+        self.fee = float(fee)
         self.name = name
 
     def get_invoice_text(self):
         if self.fee == 0:
-            return(self.qty + " " + self.name + "s")
+            return(str(self.qty) + " " + self.name + "s")
         else:
-            return(self.qty + " " + self.name + "s  with a $" + self.fee + " fee per " + self.name)
+            return(str(self.qty) + " " + self.name + "s  with a $" + str(self.fee) + " fee per " + self.name)
     def get_cost(self):
         return self.qty * (self.base_cost + self.fee)
 
@@ -62,14 +62,14 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.export_format = self.OutputFormatChoice.GetStringSelection() # Capture the output format
         log.debug("Captured all settings.") # Debug message
 
-        self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["S"]), "S " + self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
-        self.MShirt = shirt(self.MSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["M"]), "M " + self.clothing_type)
-        self.LShirt = shirt(self.LSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["L"]), "L " + self.clothing_type)
-        self.XLShirt = shirt(self.XLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XL"]), "XL " + self.clothing_type)
-        self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXL"]), "XXL " + self.clothing_type)
-        self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXL"]), "XXXL " + self.clothing_type)
-        self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXXL"]), "XXXXL " + self.clothing_type)
-        self.XXXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings(["production_miltiplers"]["XXXXXL"]), "XXXXXL " + self.clothing_type)
+        self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["S"], "S " + self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
+        self.MShirt = shirt(self.MSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["M"], "M " + self.clothing_type)
+        self.LShirt = shirt(self.LSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["L"], "L " + self.clothing_type)
+        self.XLShirt = shirt(self.XLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XL"], "XL " + self.clothing_type)
+        self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXL"], "XXL " + self.clothing_type)
+        self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXL"], "XXXL " + self.clothing_type)
+        self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXL"], "XXXXL " + self.clothing_type)
+        self.XXXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXXL"], "XXXXXL " + self.clothing_type)
 
         self.order_list = [self.SShirt, self.MShirt, self.LShirt, self.XLShirt, self.XXLShirt, self.XXXLShirt, self.XXXXLShirt, self.XXXXXLShirt] # list of all shirts
 
@@ -82,7 +82,9 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         if self.export_format == "pdf":
             None
         elif self.export_format == "txt":
-            print("this needs to be done")
+            for size in self.order_list:
+                if size.get_cost() > 0:
+                    print(size.get_invoice_text())
         else:
             log.error("Error: Export format not understood")
     
