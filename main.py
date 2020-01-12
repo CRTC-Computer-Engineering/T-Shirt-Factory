@@ -18,12 +18,25 @@ def return_user_ids():
         cleaned_ids.append(id.replace(".yaml",""))
     return cleaned_ids
 
+def create_html_table(model, color, sides, sizes, qty, rate, amount):
+    log.debug("Ran Create HTML table")
+    return("""<tr>
+    <td style="width: 500px;">
+    <span style="left: 74.8px; top: 461.837px; font-size: 16.64px; font-family: sans-serif;">""" + model + color + sides +"Color Prints" + str(sizes) + """</span>
+    </td>
+    <td style="width: 100px;">""" + str(qty) + """</td>
+    <td style="width: 100px;">""" + str(rate) + """</td>
+    <td style="vertical-align: top; width: 100px;">""" + str(amount) + """</td>
+    </tr>
+    """)
+
 class shirt():
-    def __init__(self, qty, base_cost, fee, name):
+    def __init__(self, qty, base_cost, fee, size, name):
         self.qty = int(qty) # Set quantity of order to self.qty
         self.base_cost = float(base_cost) # Set the base cost of order to self.base_cost
         self.fee = float(fee) # Set the fee per item in order to self.fee
-        self.name = name # Set name of person ordering to self.name
+        self.name = size + name # Set name of person ordering to self.name
+        self.size  = size # Set the size (str)
 
     def get_invoice_text(self): # Setting text that will display on invoice depending on variables above
         if self.fee == 0:
@@ -41,18 +54,22 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.userdata_location = "userdata\\"
         self.initalize_filesystem()
 
+        self.subParts_waiting = self.LinesWaitingLabel # Prepare the label to update
+        log.debug("Setup all dynamic objects")
+
         self.settings = (custom_functions.yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
         self.UserIdComboBox.SetItems(return_user_ids()) # Update with ability to read files in that location
         self.ClothingTypeChoice.SetItems(self.settings["clothing_types"]) # Retreive all the clothing types from settings
         self.ClothingColorChoice.SetItems(self.settings["clothing_colors"]) # Retreive all the clothing colors from settings
         self.DiscountChoice.SetItems(['None']) # Make all new!
+        self.ExtraOrderItems = 0;
+        self.ExtraOrderHTML= "";
 
     # Function by joe
     def exit(self, event):
         exit()
 
-    # Function by joe
-    def export_all(self, event): # Exports everything at once
+    def grab_all_data(self):
         self.user_id = self.UserIdComboBox.GetValue() # Capture the User ID
         self.clothing_type = self.ClothingTypeChoice.GetStringSelection() # Capture the Clothing Type
         self.color = self.ClothingColorChoice.GetValue() # Capture the Color Selection
@@ -62,16 +79,20 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.export_format = self.OutputFormatChoice.GetStringSelection() # Capture the output format
         log.debug("Captured all settings.") # Debug message
 
-        self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["S"], "S " + self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
-        self.MShirt = shirt(self.MSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["M"], "M " + self.clothing_type)
-        self.LShirt = shirt(self.LSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["L"], "L " + self.clothing_type)
-        self.XLShirt = shirt(self.XLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XL"], "XL " + self.clothing_type)
-        self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXL"], "XXL " + self.clothing_type)
-        self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXL"], "XXXL " + self.clothing_type)
-        self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXL"], "XXXXL " + self.clothing_type)
-        self.XXXXXLShirt = shirt(self.XXXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXXL"], "XXXXXL " + self.clothing_type)
+        self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["S"], "S ", self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
+        self.MShirt = shirt(self.MSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["M"], "M ", self.clothing_type)
+        self.LShirt = shirt(self.LSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["L"], "L ", self.clothing_type)
+        self.XLShirt = shirt(self.XLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XL"], "XL ", self.clothing_type)
+        self.XXLShirt = shirt(self.XXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXL"], "XXL ", self.clothing_type)
+        self.XXXLShirt = shirt(self.XXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXL"], "XXXL ", self.clothing_type)
+        self.XXXXLShirt = shirt(self.XXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXL"], "XXXXL ", self.clothing_type)
+        self.XXXXXLShirt = shirt(self.XXXXXLSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["XXXXXL"], "XXXXXL ", self.clothing_type)
 
         self.order_list = [self.SShirt, self.MShirt, self.LShirt, self.XLShirt, self.XXLShirt, self.XXXLShirt, self.XXXXLShirt, self.XXXXXLShirt] # list of all shirts
+
+    # Function by joe
+    def export_all(self, event): # Exports everything at once
+        self.grab_all_data()
 
         # Do all math and logic
         timestamp = datetime.datetime.today()
@@ -95,6 +116,19 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             os.makedirs("data\\")
             os.makedirs("userdata\\")
             custom_functions.yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
+
+    # Function by joe
+    def add_to_order(self, event):
+        try:
+            self.grab_all_data() # Grab all the data
+            for size in self.order_list: # for every shirt order bigger than 0
+                if size.get_cost() > 0:
+                    self.ExtraOrderHTML = self.ExtraOrderHTML + create_html_table(size.name, self.color, "F, B", size.size, size.qty, size.fee + size.base_cost, size.qty) # Add a new HTML tag (rate is fee + base cost)
+            self.ExtraOrderItems = self.ExtraOrderHTML + 1 # Set the number of extra order elements + 1
+            self.subParts_waiting.SetLabel("Order Parts Waiting: " + str(self.ExtraOrderItems)) # set one larger
+            log.debug(self.ExtraOrderHTML)
+        except:
+            self.subParts_waiting.SetLabel("Error adding to order!")
 
 if __name__ == "__main__":
     log.basicConfig(level=log.DEBUG) # Set logging level

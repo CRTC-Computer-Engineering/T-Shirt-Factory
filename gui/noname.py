@@ -17,7 +17,7 @@ import wx.xrc
 class root_frame ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 474,692 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 525,811 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -160,7 +160,7 @@ class root_frame ( wx.Frame ):
 
 		OutputLabelBox = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Output" ), wx.VERTICAL )
 
-		gSizer11 = wx.GridSizer( 3, 2, 0, 0 )
+		gSizer11 = wx.GridSizer( 4, 2, 0, 0 )
 
 		self.OutputDirLabel = wx.StaticText( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Output Directory", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.OutputDirLabel.Wrap( -1 )
@@ -180,7 +180,15 @@ class root_frame ( wx.Frame ):
 		self.OutputFormatChoice.SetSelection( 0 )
 		gSizer11.Add( self.OutputFormatChoice, 0, wx.ALL, 5 )
 
-		self.ExportButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Export", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.LinesWaitingLabel = wx.StaticText( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Order Parts Waiting:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.LinesWaitingLabel.Wrap( -1 )
+
+		gSizer11.Add( self.LinesWaitingLabel, 0, wx.ALL, 5 )
+
+		self.AddToOrderButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Add To Order", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer11.Add( self.AddToOrderButton, 0, wx.ALL, 5 )
+
+		self.ExportButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Export All", wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer11.Add( self.ExportButton, 0, wx.ALL, 5 )
 
 
@@ -205,6 +213,7 @@ class root_frame ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.AddToOrderButton.Bind( wx.EVT_BUTTON, self.add_to_order )
 		self.ExportButton.Bind( wx.EVT_BUTTON, self.export_all )
 		self.Bind( wx.EVT_MENU, self.exit, id = self.MenuBarExit.GetId() )
 
@@ -213,6 +222,9 @@ class root_frame ( wx.Frame ):
 
 
 	# Virtual event handlers, overide them in your derived class
+	def add_to_order( self, event ):
+		event.Skip()
+
 	def export_all( self, event ):
 		event.Skip()
 
