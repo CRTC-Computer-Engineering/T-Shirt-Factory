@@ -1,2 +1,2 @@
-py -m PyInstaller --onefile -w main.py
+py -m PyInstaller --onefile main.py
 pause
