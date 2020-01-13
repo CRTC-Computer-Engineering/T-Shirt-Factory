@@ -1,5 +1,4 @@
 customer:
   previous_orders:
-    1-6-2020:
+    01022020:
       cost: 30
-      other: yote
