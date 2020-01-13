@@ -22,7 +22,7 @@ def create_html_table(model, color, sides, sizes, qty, rate, amount):
     log.debug("Ran Create HTML table")
     return("""<tr>
     <td style="width: 500px;">
-    <span style="left: 74.8px; top: 461.837px; font-size: 16.64px; font-family: sans-serif;">""" + model + color + sides +"Color Prints" + str(sizes) + """</span>
+    <span style="left: 74.8px; top: 461.837px; font-size: 16.64px; font-family: sans-serif;">""" + model + " - " + color + " - " + sides + " - " + "Color Prints" + " - " + str(sizes) + """</span>
     </td>
     <td style="width: 100px;">""" + str(qty) + """</td>
     <td style="width: 100px;">""" + str(rate) + """</td>
