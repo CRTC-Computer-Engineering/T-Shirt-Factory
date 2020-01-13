@@ -106,7 +106,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
                 template_data = templateHTML.read()
             template_data = template_data.replace('%orderList%', self.ExtraOrderHTML)
 
-            with open(self.export_location + '/invoice.html', 'w+') as output_html:
+            with open("tmp\\invoice.html", "w+") as output_html:
                 output_html.write(template_data)
         elif self.export_format == "txt": # Determines export file format
             for size in self.order_list:
@@ -121,6 +121,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         if not os.path.exists("data\\"): # If the file does not exist, initalize everything
             os.makedirs("data\\")
             os.makedirs("userdata\\")
+            os.makedirs("tmp\\")
             custom_functions.yaml_loader(self.settings_location, {'clothing_types': ['T-Shirt', 'Shirt', 'Uniform Shirt', 'Hoodie'], 'clothing_colors': ['Red', 'Green', 'Blue', 'Orange', 'Yellow'], 'production_miltiplers': {'XS': 1.0, 'S': 1.0, 'M': 1.0, 'L': 1.0, 'XL': 1.0, 'XXL': 1.25, 'XXXL': 1.25}})
 
     # Function by joe
