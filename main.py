@@ -77,6 +77,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.discount = self.DiscountChoice.GetStringSelection() # Capture the discount choice
         self.use_production_modifiers = self.UseProductionModifiersBox.Get3StateValue() # Capture the bool
         self.export_format = self.OutputFormatChoice.GetStringSelection() # Capture the output format
+        self.export_location = self.OutputDirSelection.GetPath() # Capute the output directory
         log.debug("Captured all settings.") # Debug message
 
         self.SShirt = shirt(self.SSpin.GetValue(), self.base_price, self.settings["production_miltiplers"]["S"], "S ", self.clothing_type) # Get the values of all the spinboxes for the qty of shirts
@@ -100,8 +101,13 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             custom_functions.yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {str(timestamp.month) + "-" + str(timestamp.day) + "-" + str(timestamp.year): {'cost': 30, 'other': 'yote'}}}})
 
         # Export everything
-        if self.export_format == "pdf": # Determines export file format
-            None
+        if self.export_format == "html": # Determines export file format
+            with open('data/html/invoice.html', 'r') as templateHTML :
+                template_data = templateHTML.read()
+            template_data = template_data.replace('%orderList%', self.ExtraOrderHTML)
+
+            with open(self.export_location + '/invoice.html', 'w+') as output_html:
+                output_html.write(template_data)
         elif self.export_format == "txt": # Determines export file format
             for size in self.order_list:
                 if size.get_cost() > 0:
@@ -124,9 +130,9 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             for size in self.order_list: # for every shirt order bigger than 0
                 if size.get_cost() > 0:
                     self.ExtraOrderHTML = self.ExtraOrderHTML + create_html_table(size.name, self.color, "F, B", size.size, size.qty, size.fee + size.base_cost, size.qty) # Add a new HTML tag (rate is fee + base cost)
-            self.ExtraOrderItems = self.ExtraOrderHTML + 1 # Set the number of extra order elements + 1
-            self.subParts_waiting.SetLabel("Order Parts Waiting: " + str(self.ExtraOrderItems)) # set one larger
             log.debug(self.ExtraOrderHTML)
+            self.ExtraOrderItems = self.ExtraOrderItems + 1 # Set the number of extra order elements + 1
+            self.subParts_waiting.SetLabel("Order Parts Waiting: " + str(self.ExtraOrderItems)) # set one larger
         except:
             self.subParts_waiting.SetLabel("Error adding to order!")
 

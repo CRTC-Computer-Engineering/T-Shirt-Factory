@@ -175,7 +175,7 @@ class root_frame ( wx.Frame ):
 
 		gSizer11.Add( self.OutputDataTypeLabel, 0, wx.ALL, 5 )
 
-		OutputFormatChoiceChoices = [ u"txt", u"pdf" ]
+		OutputFormatChoiceChoices = [ u"html", u"pdf" ]
 		self.OutputFormatChoice = wx.Choice( OutputLabelBox.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, OutputFormatChoiceChoices, 0 )
 		self.OutputFormatChoice.SetSelection( 0 )
 		gSizer11.Add( self.OutputFormatChoice, 0, wx.ALL, 5 )
