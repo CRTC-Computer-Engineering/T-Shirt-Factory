@@ -6,7 +6,7 @@ from glob import glob # Import glob for getting filenames
 import os # Import os
 import yaml # Import yaml so we can use config files
 import datetime
-from xhtml2pdf import pisa
+from shutil import copytree
 
 import gui.noname as gui # Import our custom gui as gui
 import custom_functions # Import our custom files
@@ -32,8 +32,8 @@ def create_html_table(model, color, sides, sizes, qty, rate, amount):
     <span style="left: 74.8px; top: 461.837px; font-size: 16.64px; font-family: sans-serif;">""" + model + " - " + color + " - " + sides + " - " + "Color Prints" + " - " + str(sizes) + """</span>
     </td>
     <td style="width: 100px;">""" + str(qty) + """</td>
-    <td style="width: 100px;">""" + str(round(rate,2)) + """</td>
-    <td style="vertical-align: top; width: 100px;">""" + str(round(amount, 2)) + """</td>
+    <td style="width: 100px;">""" + custom_functions.return_dollar(round(rate,2)) + """</td>
+    <td style="vertical-align: top; width: 100px;">""" + custom_functions.return_dollar(round(amount, 2)) + """</td>
     </tr>
     """)
 
@@ -71,6 +71,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.DiscountChoice.SetItems(['None']) # Make all new!
         self.ExtraOrderItems = 0;
         self.ExtraOrderHTML= "";
+        self.TotalCost = 0
 
     # Function by joe
     def exit(self, event):
@@ -102,6 +103,9 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
     def export_all(self, event): # Exports everything at once
         self.grab_all_data()
 
+        self.add_to_order(None)
+        self.subParts_waiting.SetLabel("Sucsess!")
+
         # Do all math and logic
         self.date = timestamp = datetime.datetime.today()
         if self.user_id not in return_user_ids():
@@ -115,13 +119,12 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             template_data = template_data.replace('%id%', self.user_id)
             template_data = template_data.replace('%date%', str(self.date))
             template_data = template_data.replace('%terms%', "FILL ME IN")
-            template_data = template_data.replace('%balanceDue%', "FILL ME IN")
+            template_data = template_data.replace('%balanceDue%', custom_functions.return_dollar(round(self.TotalCost, 2)))
 
             with open("tmp\\invoice.html", "w+") as output_html:
                 output_html.write(template_data)
-
-            if self.export_format == "pdf":
-                convertHtmlToPdf(template_data, self.export_location + "\\Invoice.pdf")
+            
+            copytree("tmp\\", self.export_location + "\\Invoice" + self.user_id + "\\" )
 
         elif self.export_format == "txt": # Determines export file format
             for size in self.order_list:
@@ -146,6 +149,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
             for size in self.order_list: # for every shirt order bigger than 0
                 if size.get_cost() > 0:
                     self.ExtraOrderHTML = self.ExtraOrderHTML + create_html_table(size.name, self.color, "F, B", size.size, size.qty, size.fee + size.base_cost, size.qty * (size.fee + size.base_cost)) # Add a new HTML tag (rate is fee + base cost)
+                    self.TotalCost = self.TotalCost + size.qty * (size.fee + size.base_cost) # Record the total cost
             log.debug(self.ExtraOrderHTML)
             self.ExtraOrderItems = self.ExtraOrderItems + 1 # Set the number of extra order elements + 1
             self.subParts_waiting.SetLabel("Order Parts Waiting: " + str(self.ExtraOrderItems)) # set one larger
