@@ -25,6 +25,7 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         self.settings_location = "data\\settings.yaml"
         self.userdata_location = "userdata\\"
         self.initalize_filesystem()
+        self.timestamp = datetime.datetime.today()
 
         self.settings = (custom_functions.yaml_loader(self.settings_location)) # Load the yaml settings and save them as self.settings
         self.UserIdComboBox.SetItems(return_user_ids()) # Update with ability to read files in that location
@@ -45,9 +46,8 @@ class tshirt_factory(gui.root_frame): # Class for our app frame
         log.debug("Captured all messages.") # Debug message
 
         # Do all math and logic
-        timestamp = datetime.datetime.today()
         if self.user_id not in return_user_ids():
-            custom_functions.yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {str(timestamp.month) + "-" + str(timestamp.day) + "-" + str(timestamp.year): {'cost': 30, 'other': 'yote'}}}})
+            custom_functions.yaml_loader(self.userdata_location + str(self.user_id) + ".yaml", {'customer': {'previous_orders': {str(self.timestamp.month) + "-" + str(self.timestamp.day) + "-" + str(self.timestamp.year): {'cost': 30, 'other': 'yote'}}}})
 
         # Export everything
         if self.export_format == "pdf":
