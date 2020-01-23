@@ -17,7 +17,7 @@ import wx.xrc
 class root_frame ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 472,650 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"T-Shirt Factory PRE ALPHA", pos = wx.DefaultPosition, size = wx.Size( 525,811 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -53,8 +53,7 @@ class root_frame ( wx.Frame ):
 		gSizer1.Add( self.ClothingColorLabel, 0, wx.ALL, 5 )
 
 		ClothingColorChoiceChoices = []
-		self.ClothingColorChoice = wx.Choice( InputLabelBox.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, ClothingColorChoiceChoices, 0 )
-		self.ClothingColorChoice.SetSelection( 0 )
+		self.ClothingColorChoice = wx.ComboBox( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Color", wx.DefaultPosition, wx.DefaultSize, ClothingColorChoiceChoices, 0 )
 		gSizer1.Add( self.ClothingColorChoice, 0, wx.ALL, 5 )
 
 		self.BasePriceLabel = wx.StaticText( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Base Price", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -81,14 +80,6 @@ class root_frame ( wx.Frame ):
 		SizeLabelBox = wx.StaticBoxSizer( wx.StaticBox( InputLabelBox.GetStaticBox(), wx.ID_ANY, u"Sizes" ), wx.VERTICAL )
 
 		SizeGridSizer = wx.GridSizer( 0, 2, 0, 0 )
-
-		self.XS = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XS", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.XS.Wrap( -1 )
-
-		SizeGridSizer.Add( self.XS, 0, wx.ALL, 5 )
-
-		self.XSSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
-		SizeGridSizer.Add( self.XSSpin, 0, wx.ALL, 5 )
 
 		self.S = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"S", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.S.Wrap( -1 )
@@ -138,7 +129,24 @@ class root_frame ( wx.Frame ):
 		self.XXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
 		SizeGridSizer.Add( self.XXXLSpin, 0, wx.ALL, 5 )
 
+		self.XXXXLLabel = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XXXXL", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.XXXXLLabel.Wrap( -1 )
+
+		SizeGridSizer.Add( self.XXXXLLabel, 0, wx.ALL, 5 )
+
+		self.XXXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.XXXXLSpin, 0, wx.ALL, 5 )
+
+		self.XXXXXLLabel = wx.StaticText( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"XXXXXL", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.XXXXXLLabel.Wrap( -1 )
+
+		SizeGridSizer.Add( self.XXXXXLLabel, 0, wx.ALL, 5 )
+
+		self.XXXXXLSpin = wx.SpinCtrl( SizeLabelBox.GetStaticBox(), wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 99, 0 )
+		SizeGridSizer.Add( self.XXXXXLSpin, 0, wx.ALL, 5 )
+
 		self.UseProductionModifiersBox = wx.CheckBox( SizeLabelBox.GetStaticBox(), wx.ID_ANY, u"Use Size-Cost Modifiers", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.UseProductionModifiersBox.SetValue(True)
 		SizeGridSizer.Add( self.UseProductionModifiersBox, 0, wx.ALL, 5 )
 
 
@@ -152,7 +160,7 @@ class root_frame ( wx.Frame ):
 
 		OutputLabelBox = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Output" ), wx.VERTICAL )
 
-		gSizer11 = wx.GridSizer( 3, 2, 0, 0 )
+		gSizer11 = wx.GridSizer( 4, 2, 0, 0 )
 
 		self.OutputDirLabel = wx.StaticText( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Output Directory", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.OutputDirLabel.Wrap( -1 )
@@ -167,12 +175,20 @@ class root_frame ( wx.Frame ):
 
 		gSizer11.Add( self.OutputDataTypeLabel, 0, wx.ALL, 5 )
 
-		OutputFormatChoiceChoices = [ u"txt", u"pdf" ]
+		OutputFormatChoiceChoices = [ u"html", u"pdf" ]
 		self.OutputFormatChoice = wx.Choice( OutputLabelBox.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, OutputFormatChoiceChoices, 0 )
 		self.OutputFormatChoice.SetSelection( 0 )
 		gSizer11.Add( self.OutputFormatChoice, 0, wx.ALL, 5 )
 
-		self.ExportButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Export", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.LinesWaitingLabel = wx.StaticText( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Order Parts Waiting:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.LinesWaitingLabel.Wrap( -1 )
+
+		gSizer11.Add( self.LinesWaitingLabel, 0, wx.ALL, 5 )
+
+		self.AddToOrderButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Add To Order", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer11.Add( self.AddToOrderButton, 0, wx.ALL, 5 )
+
+		self.ExportButton = wx.Button( OutputLabelBox.GetStaticBox(), wx.ID_ANY, u"Export All", wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer11.Add( self.ExportButton, 0, wx.ALL, 5 )
 
 
@@ -197,14 +213,22 @@ class root_frame ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.AddToOrderButton.Bind( wx.EVT_BUTTON, self.add_to_order )
 		self.ExportButton.Bind( wx.EVT_BUTTON, self.export_all )
+		self.Bind( wx.EVT_MENU, self.exit, id = self.MenuBarExit.GetId() )
 
 	def __del__( self ):
 		pass
 
 
 	# Virtual event handlers, overide them in your derived class
+	def add_to_order( self, event ):
+		event.Skip()
+
 	def export_all( self, event ):
+		event.Skip()
+
+	def exit( self, event ):
 		event.Skip()
 
 

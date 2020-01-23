@@ -12,10 +12,12 @@ clothing_colors:
   - Yellow
 
 production_miltiplers:
-  XS: 1.0
-  S: 1.0
-  M: 1.0
-  L: 1.0
-  XL: 1.0
-  XXL: 1.25
-  XXXL: 1.25
+  XS: 0
+  S: 0
+  M: 0
+  L: 0
+  XL: 0
+  XXL: 2
+  XXXL: 3
+  XXXXL: 4
+  XXXXXL: 5
